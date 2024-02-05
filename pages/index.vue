@@ -39,70 +39,66 @@
   </template>
   
   <script setup>
-import { useLoginStore } from '~/store/login';
-import { ref, computed } from 'vue';
-
-const loginStore = useLoginStore();
-const registeredUsers = loginStore.registeredUser_data;
-
-const editingUser = ref(null);
-const editedUser = ref({
-  Name: '',
-  Age: '',
-  Gender: '',
-  DateOfJoining: '',
-  Designation: ''
-});
-
-const editUser = (index) => {
-  editingUser.value = index;
-  // Use Vue's reactive function to create a reactive copy of the user data
-  editedUser.value = { ...registeredUsers[index] };
-};
-
-const updateUser = () => {
-  // Get the index of the user being edited
-  const index = editingUser.value;
-  if (index !== null && index >= 0 && index < registeredUsers.length) {
-    // Update the user object in the registeredUsers array
-    registeredUsers[index] = { ...editedUser.value };
-    // Persist the updated user data in the login store
-    loginStore.storeUser(registeredUsers[index]);
-    // Reset editingUser
+  import { useLoginStore } from '~/store/login';
+  import { ref, computed } from 'vue';
+  
+  const loginStore = useLoginStore();
+  const registeredUsers = loginStore.registeredUser_data;
+  
+  const editingUser = ref(null);
+  const editedUser = ref({
+    Name: '',
+    Age: '',
+    Gender: '',
+    DateOfJoining: '',
+    Designation: ''
+  });
+  
+  const editUser = (index) => {
+    editingUser.value = index;
+    // Populate editedUser with the details of the user to be edited
+    editedUser.value = { ...registeredUsers[index] };
+  };
+  
+  const updateUser = () => {
+    // Update the user in the registeredUsers array
+    registeredUsers[editingUser.value] = { ...editedUser.value };
+    // Reset editing state
     editingUser.value = null;
-  }
-};
-
-const cancelEdit = () => {
-  editingUser.value = null;
-};
-
-const deleteUser = (index) => {
-  const isConfirmed = confirm("Are you sure you want to delete this user?");
-  if (isConfirmed) {
-    registeredUsers.splice(index, 1);
-    // Update the registered user data in the store
-    loginStore.registeredUser_data = [...registeredUsers];
-  }
-};
-
-const editUserFields = computed(() => {
-  return [
-    {
-      Form_Heading: 'Update User',
-      Form_Fields: [
-        { label: 'Name', inputfield: 'text', value: editedUser.value.Name },
-        { label: 'Age', inputfield: 'text', value: editedUser.value.Age },
-        { label: 'Gender', inputfield: 'radio', options: ['Male', 'Female', 'Other'], value: editedUser.value.Gender },
-        { label: 'Date of Joining', inputfield: 'date', value: editedUser.value.DateOfJoining },
-        { label: 'Designation', inputfield: 'text', value: editedUser.value.Designation }
-      ],
-      Form_button: 'Update'
+  };
+  
+  const cancelEdit = () => {
+    // Reset editing state
+    editingUser.value = null;
+  };
+  
+  const deleteUser = (index) => {
+    const isConfirmed = confirm("Are you sure you want to delete this user?");
+    if (isConfirmed) {
+      registeredUsers.splice(index, 1);
+      // Update the registered user data in the store
+      loginStore.registeredUser_data = [...registeredUsers];
     }
-  ];
-});
-
-const updateButton = computed(() => {
-  return editingUser.value !== null ? 'Update' : 'Register';
-});
-</script>
+  };
+  
+  const editUserFields = computed(() => {
+    return [
+      {
+        Form_Heading: 'Update User',
+        Form_Fields: [
+          { label: 'Name', inputfield: 'text', value: editedUser.value.Name },
+          { label: 'Age', inputfield: 'text', value: editedUser.value.Age },
+          { label: 'Gender', inputfield: 'radio', options: ['Male', 'Female', 'Other'], value: editedUser.value.Gender },
+          { label: 'Date of Joining', inputfield: 'date', value: editedUser.value.DateOfJoining },
+          { label: 'Designation', inputfield: 'text', value: editedUser.value.Designation }
+        ],
+        Form_button: 'Update'
+      }
+    ];
+  });
+  
+  const updateButton = computed(() => {
+    return editingUser.value !== null ? 'Update' : 'Register';
+  });
+  </script>
+  
