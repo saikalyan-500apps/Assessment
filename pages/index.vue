@@ -1,5 +1,7 @@
 <template>
     <div class="container mx-auto p-4">
+        <NuxtLink to="/employee" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Add Employee</NuxtLink>
+        <NuxtLink to="/contact" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Add Contact</NuxtLink>
         <h1>Register and login to view the users!</h1>
         <!-- Display information of each registered user -->
             <div v-for="(user, index) in registeredUsers" :key="index" class="border-b border-gray-200 py-2">

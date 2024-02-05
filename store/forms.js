@@ -39,6 +39,7 @@ export const useRouteStore = defineStore('route', () => {
     {id:1,route:'/',name:'Home'},
     {id:2,route:'/login',name:'Login'},
     {id:3,route:'/register',name:'Register'},
+    {id:3,route:'/displayEC',name:'displaydata'},
   ]
   return {route_form}
 })
